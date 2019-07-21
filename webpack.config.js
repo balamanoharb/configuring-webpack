@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = (env = {}, argv = {}) => ({
   // if this is the default entry and output it coulbe skipped
@@ -21,7 +22,8 @@ module.exports = (env = {}, argv = {}) => ({
         filename: "[name].css",
         chunkFilename: "[id].css"
       })
-      : null
+      : null,
+    env.analyse ? new BundleAnalyzerPlugin() : null,
   ].filter(
     // To remove any possibility of "null" values inside the plugins array, we filter it
     plugin => !!plugin

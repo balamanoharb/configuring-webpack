@@ -7,6 +7,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.5.5",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.5.5",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.1.0",
@@ -18,12 +19,14 @@
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.36.1",
+    "webpack-bundle-analyzer": "^3.3.2",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"
   },
   "scripts": {
     "build": "webpack --mode production",
-    "start:dev": "webpack-dev-server --mode=development"
+    "start:dev": "webpack-dev-server --mode=development",
+    "analyse": "yarn build --env.analyse"
   },
   "browserslist": [
     "last 2 versions",

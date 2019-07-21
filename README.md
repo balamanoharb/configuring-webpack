@@ -363,3 +363,115 @@ module: {
 },
 ```
 
+## Code Splitting and Dynamic imports
+
+- dependencies
+
+```
+yarn add @babel/plugin-syntax-dynamic-import --dev
+```
+
+- bablerc changes
+
+```javascript
+// like the browsers list it is better to keep the babelconfig seperately
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import"
+  ]
+}
+```
+
+## Visualizing bundling and dynamic imports
+
+
+```
+yarn add webpack-bundle-analyzer --dev
+```
+
+- package.json
+
+```
+"scripts": {
+    "build": "webpack --mode=production",
+    "start:dev": "webpack-dev-server --mode=development",
+    "analyse": "yarn build --env.analyse"
+},
+```
+
+- analyze will run the webpack in this mode
+
+```
+webpack --mode=production --env.analyse
+```
+
+- add to webpack config
+
+```javascript
+//...
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+
+// We set a default value to env, to avoid it being undefined
+module.exports = (env = {}, argv) => ({
+  //...
+  plugins: [
+    // Any parameter given to Webpack client can be captured on the "env"
+    env.analyse ? new BundleAnalyzerPlugin() : null,
+    //...
+  ].filter(pl => pl !== null),
+  //...
+```
+
+## Webpack magic comments to see what file is loading
+
+- index js file
+
+```
+import(/* webpackChunkName: "myAwesomeLazyModule" */ "./lazy-one")
+  .then(mod => {
+    // ...
+  });
+```
+
+- when the file loads we can identifiy in the network tab
+
+## Preloading import chunks
+
+- along with magic comments, it can be specified like this.
+- this will add 
+
+```
+<link rel=”preload”>
+```
+
+```javascript
+import(
+  /* webpackChunkName: "myAwesomeLazyModule" */
+  /* webpackPreload: true */
+  "./lazy-one"
+);
+```
+
+### Prefetch vs Preload
+
+- It looks similar, but prefetch will not load before the bundle/chunk that requests this resource, it will load after on the browser idle time.
+- this will basically load in idle time
+
+```javascript
+import(
+  /* webpackChunkName: "prefetchedResource"
+  /* webpackPrefetch: true */
+  "./myResrouce"
+)
+```
+
+- for pages with multiple prefetch resource we can define priority number as well.
+
+```
+/* webpackPrefetch: 42 */
+```
+
+- refer magic comments for more :   https://webpack.js.org/api/module-methods/?source=post_page---------------------------#magic-comments

@@ -1,0 +1,6 @@
+// like the browsers list it is better to keep the babelconfig seperately
+{
+  "presets": [
+    "@babel/preset-env"
+  ]
+}

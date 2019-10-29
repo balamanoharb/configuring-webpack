@@ -1,3 +1,7 @@
+From the series of post
+
+https://tech.olx.com/webpack-from-zero-to-hero-5540b6d620ec
+
 # webpack-yarn-sample
 how to use webpack with yarn and npm scripts
 
